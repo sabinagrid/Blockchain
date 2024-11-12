@@ -1,4 +1,6 @@
 package guru.springframework.json;
 
-public class Message {
+import java.security.PublicKey;
+
+public record Message(String signedMessage, PublicKey publicKey, String message) {
 }
