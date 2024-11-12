@@ -13,7 +13,6 @@ public class Blockchain {
         this.pendingData = new ArrayList<>();
         long timestamp = new Date().getTime();
         String hash = StringUtil.applySha256("1" + timestamp + "0");
-        int zeros = 1;
         Block firstBlock = new Block("0", 0, new ArrayList<>(), hash);
         chain.add(firstBlock);
     }
@@ -27,7 +26,7 @@ public class Blockchain {
 
     public void addNewBlock(Block block) {
         synchronized (lock) {
-            if (validateNewBlock(block, chain.getLast())) {
+            if (validateNewBlock(block, chain.get(chain.size() - 1))) {
                 chain.add(block);
                 lock.notifyAll();
             }
@@ -43,12 +42,12 @@ public class Blockchain {
         return chain.size() < 15;
     }
 
-    public synchronized int getNextId() {
+    public int getNextId() {
         return chain.size() + 1;
     }
 
-    public synchronized String getLastHash() {
-        return chain.getLast().getHash();
+    public String getLastHash() {
+        return chain.get(chain.size() - 1).getHash();
     }
 
     public List<Message> getPendingData() {

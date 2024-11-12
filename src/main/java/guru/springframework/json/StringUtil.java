@@ -3,7 +3,12 @@ package guru.springframework.json;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-public class StringUtil {
+public final class StringUtil {
+
+    private StringUtil() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static String applySha256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -11,7 +16,9 @@ public class StringUtil {
             StringBuilder hexString = new StringBuilder();
             for (byte elem : hash) {
                 String hex = Integer.toHexString(0xff & elem);
-                if (hex.length() == 1) hexString.append('0');
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
                 hexString.append(hex);
             }
             return hexString.toString();

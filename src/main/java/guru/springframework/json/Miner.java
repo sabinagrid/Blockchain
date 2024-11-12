@@ -11,6 +11,7 @@ public class Miner extends Thread {
         this.minerId = minerId;
     }
 
+    @Override
     public void run() {
         while (blockchain.shouldContinueMining()) {
             Block block = mineBlock();

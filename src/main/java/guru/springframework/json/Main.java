@@ -3,7 +3,12 @@ package guru.springframework.json;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public final class Main {
+
+    private Main() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static void main(String[] args) {
         Blockchain blockchain = new Blockchain();
         int maxNrOfMiners = 10;
@@ -23,22 +28,20 @@ public class Main {
             miner.start();
         }
 
-        for (Miner miner : miners) {
-            try {
-                miner.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        for (User user : users) {
-            try {
-                user.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        waitForThreads(miners);
+        waitForThreads(users);
 
         blockchain.displayBlockchain();
+    }
+
+    private static void waitForThreads(List<? extends Thread> threads) {
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
