@@ -16,10 +16,12 @@ public class Block {
     }
 
     public String getHash() {
+
         return hash;
     }
 
     public String getPreviousHash() {
+
         return previousHash;
     }
 

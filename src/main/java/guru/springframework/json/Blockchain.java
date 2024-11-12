@@ -11,10 +11,18 @@ public class Blockchain {
     public Blockchain() {
         this.chain = new ArrayList<>();
         this.pendingData = new ArrayList<>();
+        createGenesisBlock();
+    }
+
+    private void createGenesisBlock() {
         long timestamp = new Date().getTime();
         String hash = StringUtil.applySha256("1" + timestamp + "0");
-        Block firstBlock = new Block("0", 0, new ArrayList<>(), hash);
-        chain.add(firstBlock);
+        Block genesisBlock = new Block("0", 0, new ArrayList<>(), hash);
+        chain.add(genesisBlock);
+    }
+
+    public boolean isBlockchainInitialized() {
+        return !chain.isEmpty();
     }
 
     public void addNewMessage(Message message) {
@@ -51,12 +59,22 @@ public class Blockchain {
     }
 
     public List<Message> getPendingData() {
-        return new ArrayList<>(pendingData);
+        synchronized (lock) {
+            return new ArrayList<>(pendingData);
+        }
     }
 
     public void displayBlockchain() {
         for (Block block : chain) {
             System.out.println(block);
         }
+    }
+
+    public List<Block> getChain() {
+        return new ArrayList<>(chain);
+    }
+
+    public int getChainSize() {
+        return chain.size();
     }
 }

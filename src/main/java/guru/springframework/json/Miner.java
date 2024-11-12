@@ -19,7 +19,7 @@ public class Miner extends Thread {
         }
     }
 
-    private Block mineBlock() {
+    Block mineBlock() {
         String previousHash = blockchain.getLastHash();
         int blockId = blockchain.getNextId();
         long timestamp = new Date().getTime();
